@@ -9,9 +9,14 @@ import globalComponent from '@/components'
 import '@/styles/index.scss'
 // 引入路由
 import router from './router'
+// 引入仓库
+import pinia from './store'
+
 // 安装自定义插件
 app.use(globalComponent)
 // 注册模板路由
 app.use(router)
+// 安装仓库
+app.use(pinia)
 // 挂载应用
 app.mount('#app')
