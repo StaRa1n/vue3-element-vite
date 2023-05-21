@@ -7,12 +7,16 @@ import { loginForm, loginResponseData } from '@/api/user/type'
 import { userState } from './types/types'
 // 引入操作本地存储的工具方法
 import { SET_TOKEN, GET_TOKEN } from '@/utils/token'
+// 引入路由(常量)
+import { constantRoute } from '@/router/routes'
+
 // 创建用户小仓库
 let useUserStore = defineStore('User', {
   // 小仓库存储数据地方
   state: (): userState => {
     return {
       token: GET_TOKEN(), // 用户的唯一标识
+      menuRoute: constantRoute
     }
   },
   // 异步|逻辑方法
