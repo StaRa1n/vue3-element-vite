@@ -90,3 +90,7 @@ import globalComponent from "@/components"
 // 安装自定义插件
 app.use(globalComponent)
 ```
+
+### element 使用
+
+当 container 容器中的 el-header、el-aside 和 el-main 组件化时,会出现三个在同一行的情况,在 el-container 上添加 `flex-direction: column`解决
