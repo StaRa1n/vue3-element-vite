@@ -8,7 +8,6 @@
       <!-- 没有子组件 -->
       <el-menu-item v-if="!menu.children" :index="menu.path">
         <template #title>
-          <el-icon><User /></el-icon>
           <span>{{ menu.meta.title }}</span>
         </template>
       </el-menu-item>
@@ -40,7 +39,6 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { User, Lock } from '@element-plus/icons-vue'
 defineProps(['menuList'])
 
 // 菜单点击相关

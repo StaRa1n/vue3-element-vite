@@ -1,5 +1,7 @@
 <template>
-  <el-header class="layout_header">header</el-header>
+  <el-header class="layout_header">
+    导航,头像等
+  </el-header>
 </template>
 
 <script setup lang="ts"></script>
