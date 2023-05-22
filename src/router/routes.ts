@@ -19,6 +19,7 @@ export const constantRoute = [
     meta: {
       title: '主页',
       hidden: true,
+      icon: 'House',
     },
     children: [
       {
@@ -27,6 +28,7 @@ export const constantRoute = [
         name: 'home',
         meta: {
           title: '首页',
+          icon: 'House',
         },
       },
     ],
@@ -37,6 +39,7 @@ export const constantRoute = [
     name: 'OfficeReq',
     meta: {
       title: '办公审批',
+      icon: 'Notebook',
     },
     children: [
       {
@@ -45,7 +48,9 @@ export const constantRoute = [
         name: 'SubmitReq',
         meta: {
           title: '发起申请',
+          icon: 'DocumentAdd',
         },
+        
       },
       {
         path: '/OfficeReq/MyReq',
@@ -53,6 +58,7 @@ export const constantRoute = [
         name: 'MyReq',
         meta: {
           title: '我的申请',
+          icon: 'Document',
         },
       },
       {
@@ -61,6 +67,7 @@ export const constantRoute = [
         name: 'ManageReq',
         meta: {
           title: '管理申请',
+          icon: 'Reading',
         },
       },
     ],
