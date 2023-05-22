@@ -11,6 +11,8 @@ import '@/styles/index.scss'
 import router from './router'
 // 引入仓库
 import pinia from './store'
+// 引入element图标
+import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 
 // 安装自定义插件
 app.use(globalComponent)
@@ -18,5 +20,9 @@ app.use(globalComponent)
 app.use(router)
 // 安装仓库
 app.use(pinia)
+// 全局注册所有图标
+for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+  app.component(key, component)
+}
 // 挂载应用
 app.mount('#app')
