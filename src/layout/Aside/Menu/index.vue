@@ -43,17 +43,17 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useRouter } from 'vue-router';
+import { useRouter } from 'vue-router'
 defineProps(['menuList'])
 
 //获取路由器对象
-let $router = useRouter();
+let $router = useRouter()
 
 // 菜单点击相关
 const activeIndex = ref('1')
 const handleSelect = (key: string, keyPath: string[]) => {
   console.log(key, keyPath)
-  $router.push(key);
+  $router.push(key)
 }
 </script>
 
