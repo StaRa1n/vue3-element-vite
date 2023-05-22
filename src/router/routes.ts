@@ -7,7 +7,7 @@ export const constantRoute = [
     name: 'login', // 命名路由
     meta: {
       title: '登录',
-      hiddle: true,
+      hidden: true,
     },
   },
   {
@@ -18,7 +18,7 @@ export const constantRoute = [
     redirect: '/home',
     meta: {
       title: '主页',
-      hiddle: true,
+      hidden: true,
     },
     children: [
       {
@@ -29,39 +29,39 @@ export const constantRoute = [
           title: '首页',
         },
       },
+    ],
+  },
+  {
+    path: '/OfficeReq',
+    component: () => import('@/layout/index.vue'),
+    name: 'OfficeReq',
+    meta: {
+      title: '办公审批',
+    },
+    children: [
       {
-        path: '/OfficeReq',
-        component: () => import('@/views/home/index.vue'),
-        name: 'OfficeReq',
+        path: '/OfficeReq/SubmitReq',
+        component: () => import('@/views/OfficeReq/SubmitReq/index.vue'),
+        name: 'SubmitReq',
         meta: {
-          title: '办公审批',
+          title: '发起申请',
         },
-        children: [
-          {
-            path: '/OfficeReq/SubmitReq',
-            component: () => import('@/views/OfficeReq/SubmitReq/index.vue'),
-            name: 'SubmitReq',
-            meta: {
-              title: '发起申请',
-            },
-          },
-          {
-            path: '/OfficeReq/SubmitReq',
-            component: () => import('@/views/OfficeReq/MyReq/index.vue'),
-            name: 'SubmitReq',
-            meta: {
-              title: '我的申请',
-            },
-          },
-          {
-            path: '/OfficeReq/SubmitReq',
-            component: () => import('@/views/OfficeReq/ManageReq/index.vue'),
-            name: 'SubmitReq',
-            meta: {
-              title: '管理申请',
-            },
-          },
-        ],
+      },
+      {
+        path: '/OfficeReq/MyReq',
+        component: () => import('@/views/OfficeReq/MyReq/index.vue'),
+        name: 'MyReq',
+        meta: {
+          title: '我的申请',
+        },
+      },
+      {
+        path: '/OfficeReq/ManageReq',
+        component: () => import('@/views/OfficeReq/ManageReq/index.vue'),
+        name: 'ManageReq',
+        meta: {
+          title: '管理申请',
+        },
       },
     ],
   },
@@ -71,7 +71,7 @@ export const constantRoute = [
     name: '404',
     meta: {
       title: '404',
-      hiddle: true,
+      hidden: true,
     },
   },
   {
@@ -79,8 +79,10 @@ export const constantRoute = [
     path: '/:pathMatch(.*)*',
     // redirect: '/404',
     name: 'Any',
+    component: () => import('@/views/404/index.vue'),
     meta: {
       title: '任意路由',
+      hidden: true,
     },
   },
   // {

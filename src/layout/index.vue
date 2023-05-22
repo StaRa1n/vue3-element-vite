@@ -7,15 +7,17 @@ import Main from './Main/index.vue'
 <template>
   <el-container class="layout_container">
     <Aside />
-    <el-container class="left">
+    <el-container class="right">
       <Herder />
-      <Main />
+      <el-main class="layout_main">
+        <RouterView></RouterView>
+      </el-main>
     </el-container>
   </el-container>
 </template>
 
 <style lang="scss" scoped>
-.left {
+.right {
   flex-direction: column;
 }
 </style>

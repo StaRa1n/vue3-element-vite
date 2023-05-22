@@ -1,6 +1,6 @@
 <template>
   <el-main class="layout_main">
-    <p style="background-color: #fff; height: 100%">1111</p>
+    <RouterView></RouterView>
   </el-main>
 </template>
 ve
