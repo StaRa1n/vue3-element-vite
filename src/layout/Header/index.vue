@@ -2,19 +2,17 @@
   <el-header class="layout_header">
     <div class="header_left">
       <!-- 左侧面包屑 -->
-      <Breadcrumb/>
+      <Breadcrumb />
     </div>
     <div class="header_right">
-      <Setting/>
+      <Setting />
     </div>
   </el-header>
 </template>
 
 <script setup lang="ts">
-import Breadcrumb  from './BreadCrumb/index.vue';
-import Setting  from './Setting/index.vue';
-
-
+import Breadcrumb from './BreadCrumb/index.vue'
+import Setting from './Setting/index.vue'
 </script>
 
 <style lang="scss" scoped>
@@ -29,7 +27,6 @@ import Setting  from './Setting/index.vue';
   .header_left {
     display: flex;
     align-items: center;
-    
   }
   .header_right {
     display: flex;

@@ -23,7 +23,7 @@
 <script setup lang="ts"></script>
 
 <style scoped>
-.logo{
+.logo {
   margin-left: 12px;
 }
 </style>

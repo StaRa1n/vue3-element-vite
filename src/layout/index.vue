@@ -3,7 +3,7 @@
     <Aside />
     <el-container class="right">
       <Herder />
-      <Main/>
+      <Main />
     </el-container>
   </el-container>
 </template>
@@ -12,10 +12,7 @@
 import Herder from './Header/index.vue'
 import Aside from './Aside/index.vue'
 import Main from './Main/index.vue'
-
 </script>
-
-
 
 <style lang="scss" scoped>
 .right {
