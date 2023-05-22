@@ -1,13 +1,7 @@
 <template>
-  <div>
-    管理审批页面
-  </div>
+  <div>管理审批页面</div>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts"></script>
 
-</script>
-
-<style scoped>
-
-</style>
+<style scoped></style>
