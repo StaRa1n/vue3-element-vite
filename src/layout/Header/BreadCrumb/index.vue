@@ -1,8 +1,11 @@
 <template>
   <!-- 折叠菜单图标 -->
-  <el-icon class="icon" @click="changeIcon">
-    <component :is="LayOutSettingStore.fold ? 'Expand' : 'Fold'"></component>
-  </el-icon>
+  <transition name="rotate">
+    <el-icon class="icon" @click="changeIcon">
+      <component :is="LayOutSettingStore.fold ? 'Expand' : 'Fold'" ></component>
+    </el-icon>
+  </transition>
+
   <el-breadcrumb separator-icon="ArrowRight">
     <!-- 面包屑动态展示路由名字与标题 -->
     <el-breadcrumb-item
@@ -27,10 +30,22 @@ const changeIcon = () => {
 }
 
 let $Route = useRoute()
+
+
 </script>
 
 <style scoped>
 .icon {
   margin-right: 10px;
+}
+
+.rotate-enter-active,
+.rotate-leave-active {
+  transition: transform 0.5s;
+}
+
+.rotate-enter-to,
+.rotate-leave-from {
+  transform: rotate(360deg);
 }
 </style>

@@ -17,7 +17,6 @@ export const constantRoute = [
     name: 'layout',
     redirect: '/home',
     meta: {
-      title: '主页',
       hidden: true,
       icon: 'House',
     },
@@ -37,6 +36,7 @@ export const constantRoute = [
     path: '/OfficeReq',
     component: () => import('@/layout/index.vue'),
     name: 'OfficeReq',
+    redirect: '/OfficeReq/SubmitReq',
     meta: {
       title: '办公审批',
       icon: 'Notebook',

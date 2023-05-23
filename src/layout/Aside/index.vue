@@ -38,7 +38,7 @@ let LayOutSettingStore = useLayOutSettingStore()
   width: 250px;
   justify-content: space-between;
   border-right: $border;
-  transition: all 1s;
+  transition: all 0.8s;
   // 折叠后宽度
   &.fold {
     width: 70px;
