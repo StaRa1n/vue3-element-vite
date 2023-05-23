@@ -1,10 +1,8 @@
 <template>
   <!-- 折叠菜单图标 -->
-  <transition name="rotate">
-    <el-icon class="icon" @click="changeIcon">
-      <component :is="LayOutSettingStore.fold ? 'Expand' : 'Fold'" ></component>
-    </el-icon>
-  </transition>
+  <el-icon class="icon" @click="changeIcon">
+    <Expand class="expand" :class="LayOutSettingStore.fold ? 'rotate' : ''" />
+  </el-icon>
 
   <el-breadcrumb separator-icon="ArrowRight">
     <!-- 面包屑动态展示路由名字与标题 -->
@@ -24,28 +22,27 @@ import { useRoute } from 'vue-router'
 import useLayOutSettingStore from '@/store/modules/setting'
 
 // 改变菜单状态
+let rotate = false
 let LayOutSettingStore = useLayOutSettingStore()
 const changeIcon = () => {
   LayOutSettingStore.fold = !LayOutSettingStore.fold
+  rotate = !rotate
+  console.log(rotate)
 }
 
 let $Route = useRoute()
-
-
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .icon {
   margin-right: 10px;
 }
-
-.rotate-enter-active,
-.rotate-leave-active {
-  transition: transform 0.5s;
-}
-
-.rotate-enter-to,
-.rotate-leave-from {
-  transform: rotate(360deg);
+.expand {
+  transform: rotate(0deg);
+  transition: transform 0.8s ease-in-out;
+  &.rotate {
+    transform: rotate(-180deg);
+    transition: transform 0.8s ease-in-out;
+  }
 }
 </style>
