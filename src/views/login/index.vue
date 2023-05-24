@@ -45,6 +45,7 @@ import { useRouter } from 'vue-router'
 // 引入用户相关小仓库
 import useUserStore from '@/store/modules/user'
 
+
 let userStore = useUserStore()
 // 获取路由器
 let $router = useRouter()
@@ -88,9 +89,11 @@ const login = async () => {
   // 请求失败 => 弹出失败信息
   try {
     await userStore.userLogin(loginForm)
+    // 获取用户信息
+    userStore.getUserInfo()
     // 编程式导航跳转到展示数据首页
     $router.push('/')
-    //登录成功的提示信息
+    // 登录成功的提示信息
     ElNotification({
       title: 'Success',
       message: '登陆成功',
