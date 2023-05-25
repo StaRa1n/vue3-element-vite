@@ -17,12 +17,12 @@ request.interceptors.request.use((config) => {
 
   // 请求用户token
   let userStore = useUserStore()
-  
+
   if (userStore.token) {
     config.headers.token = userStore.token
   }
-    //返回配置对象
-    return config
+  //返回配置对象
+  return config
 })
 
 //响应拦截器

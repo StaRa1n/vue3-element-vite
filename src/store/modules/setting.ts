@@ -7,7 +7,7 @@ let useLayOutSettingStore = defineStore('SettingStore', {
       // 折叠菜单
       fold: false,
       // 刷新业务
-      refresh: false
+      refresh: false,
     }
   },
 })

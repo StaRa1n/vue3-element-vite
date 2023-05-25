@@ -49,7 +49,7 @@ let useUserStore = defineStore('User', {
         this.avatar = result.data.checkUser.avatar
         return 'OK'
       } else {
-        return Promise.reject('获取用户信息失败')        
+        return Promise.reject('获取用户信息失败')
       }
     },
     // 退出登录
@@ -59,7 +59,7 @@ let useUserStore = defineStore('User', {
       this.username = ''
       this.avatar = ''
       REMOVE_TOKEN()
-    }
+    },
   },
   getters: {},
 })

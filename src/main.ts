@@ -16,7 +16,6 @@ import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 // 引入路由鉴权守卫
 import './permission.ts'
 
-
 // 安装自定义插件
 app.use(globalComponent)
 // 注册模板路由
