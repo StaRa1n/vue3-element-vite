@@ -72,6 +72,45 @@ export const constantRoute = [
     ],
   },
   {
+    path: '/acl',
+    component: () => import('@/layout/index.vue'),
+    name: 'acl',
+    redirect: '/acl/permission',
+    meta: {
+      title: '权限管理',
+      icon: 'View',
+    },
+    children: [
+      {
+        path: '/acl/user',
+        component: () => import('@/views/acl/user/index.vue'),
+        name: 'user',
+        meta: {
+          title: '用户管理',
+          icon: 'User',
+        },
+      },
+      {
+        path: '/acl/role',
+        component: () => import('@/views/acl/role/index.vue'),
+        name: 'role',
+        meta: {
+          title: '角色管理',
+          icon: 'User',
+        },
+      },
+      {
+        path: '/acl/permission',
+        component: () => import('@/views/acl/permission/index.vue'),
+        name: 'permission',
+        meta: {
+          title: '菜单管理',
+          icon: 'Operation',
+        },
+      },
+    ],
+  },
+  {
     path: '/404',
     component: () => import('@/views/404/index.vue'),
     name: '404',

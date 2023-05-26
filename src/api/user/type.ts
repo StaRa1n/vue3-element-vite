@@ -15,11 +15,12 @@ export interface loginResponseData {
   data: tokenType
 }
 
-interface userInfo {
+export interface userInfo {
   userId: number
   avatar: string
   username: string
   password: string
+  phone: string
   desc: string
   roles: string[]
   buttons: string[]
