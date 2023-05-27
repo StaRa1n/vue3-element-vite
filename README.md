@@ -59,6 +59,10 @@ let props = defineProps({
 let props = defineProps(["info",'money']);
 ```
 
+### 父子组件通信(provide)
+
+父组件通过`provide('name', data)`给子组件(接收: `inject:['name']`)传递可修改的响应式数据
+
 ### 使用自定义插件封装全局组件
 
 **在建立全局组件的文件夹下新建 index.ts 文件**
