@@ -4,7 +4,7 @@
       <el-button type="primary" @click="openDialog">添加用户</el-button>
       <el-dialog
         v-model="dialogAddUser"
-        :title="form.editClick ? '编辑员工' : '添加员工'"
+        :title="dialogAddUser === 'editUser' ? '编辑员工' : '添加员工'"
       >
         <el-form
           :model="form"
@@ -63,25 +63,26 @@
           <el-form-item></el-form-item>
         </el-form>
         <span class="dialog-footer">
-          <el-button type="primary" @click="addUser">保存</el-button>
+          <el-button type="primary" @click="save">保存</el-button>
           <el-button type="primary" @click="dialogAddUser = false">
             退出
           </el-button>
         </span>
       </el-dialog>
     </el-form-item>
-    <el-form-item>
-      <el-button type="danger" @click="click">批量删除</el-button>
-    </el-form-item>
+    <slot name="deleteButton"></slot>
   </el-form>
 </template>
 
 <script setup lang="ts">
 import { reactive, ref, nextTick, watch } from 'vue'
 // 引入添加员工的API
-import { reqAddUser } from '@/api/acl/user'
+import { reqAddUser, reqEditUser } from '@/api/acl/user'
 
 const props = defineProps(['getUserList', 'editUserData'])
+// 弹窗显示控制
+const dialogAddUser = ref()
+let formRef = ref()
 
 // 收集数据
 let form = reactive({
@@ -98,12 +99,9 @@ let form = reactive({
   token: 'System Token',
 })
 
-const dialogAddUser = ref(false)
-let formRef = ref()
 // 打开对话框
 const openDialog = () => {
-  form.editClick = false
-  dialogAddUser.value = true
+  dialogAddUser.value = 'addUser'
   // 重新打开对话框时清空上次操作内容
   nextTick(() => {
     // 恢复表单初始值
@@ -132,23 +130,31 @@ const openDialog = () => {
 }
 
 // 添加员工
-const addUser = async () => {
+const save = async () => {
   // 保证表单通过校验
   await formRef.value.validate()
-  // 请求添加员工
-  const result = await reqAddUser(form)
-  // 点击后更新数据并关闭对话框
-  dialogAddUser.value = false
+  if (dialogAddUser.value === 'addUser') {
+    // 请求添加员工
+    const result = await reqAddUser(form)
+    if (result.code === 200) {
+      // 点击后更新数据并关闭对话框
+      ElMessage.success(result.data.message)
+    } else {
+      ElMessage.error(result.data.message)
+    }
+  } else if (dialogAddUser.value === 'editUser') {
+    const result = await reqEditUser(form)
+    console.log(result)
+  }
   // 更新列表
   props.getUserList()
-  ElMessage.success(result.data.message)
+  dialogAddUser.value = false
 }
 
 //编辑员工
 watch(props.editUserData, () => {
-  dialogAddUser.value = true
+  dialogAddUser.value = 'editUser'
   form = Object.assign(form, props.editUserData)
-  form.editClick = true
 })
 // 表单校验规则
 const usernameRule = (rule: any, value: any, callBack: any) => {

@@ -14,12 +14,24 @@
   </el-card>
   <el-card>
     <!-- 顶部按钮 -->
-    <FromAddUser
-      :getUserList="getUserList"
-      :editUserData="editUserData"
-    ></FromAddUser>
+    <FromAddUser :getUserList="getUserList" :editUserData="editUserData">
+      <template #deleteButton>
+        <el-form-item>
+          <el-button type="danger" @click="deleteSlectedUsers">
+            批量删除
+          </el-button>
+        </el-form-item>
+      </template>
+    </FromAddUser>
     <!-- 用户列表 -->
-    <el-table class="user_table" stripe="true" border="true" :data="userArr">
+
+    <el-table
+      class="user_table"
+      stripe="true"
+      border="true"
+      :data="userArr"
+      @selection-change="selectUser"
+    >
       <el-table-column type="selection" align="center" />
       <el-table-column label="ID" align="center" prop="userId" width="50" />
       <el-table-column
@@ -38,14 +50,7 @@
       />
       <el-table-column label="操作" align="center" width="280">
         <template #="{ row }">
-          <el-button
-            type="primary"
-            size="small"
-            icon="User"
-            @click="detail = true"
-          >
-            暂定
-          </el-button>
+          <el-button type="primary" size="small" icon="User">暂定</el-button>
           <el-button
             type="primary"
             size="small"
@@ -92,10 +97,13 @@ let pageSize = ref(5)
 let userArr = ref([])
 // 用户中总数据
 let total = ref(0)
+// 编辑的用户的数据
+let editUserData: any = reactive({})
+// 复选框选择的用户
+let slectedUsers = ref<any[]>([])
 
-let editUserData: any = reactive({ editClick: true })
-
-// 通过toRefs将一个响应式对象的数据给另一个响应式对象
+// 编辑员工
+// 通过toRefs将一个用户的数据给另一个响应式对象
 const editUser = (row: any) => {
   const refs = toRefs(row)
   Object.keys(refs).forEach((key) => {
@@ -121,11 +129,22 @@ onMounted(async () => {
 
 // 删除单个用户(传入用户id)
 const deleteUser = async (row: any) => {
-  let result = await reqDeleteUser([row.userId])
+  let result = await reqDeleteUser(row.userId)
   if (result.code === 200) {
     console.log(result.data.message)
   }
   getUserList()
+}
+
+// 当复选框改变时
+const selectUser = (users: any) => {
+  slectedUsers.value = users
+}
+// 删除选择的用户
+const deleteSlectedUsers = () => {
+  slectedUsers.value.forEach((user) => {
+    deleteUser(user)
+  })
 }
 
 // 查询用户
@@ -137,7 +156,7 @@ const searchUser = async () => {
     total.value = 1
     console.log(result)
   } else {
-    ElMessage.error(result.data.message)
+    ElMessage.error(ressult.data.message)
   }
 }
 

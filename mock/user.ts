@@ -1,4 +1,5 @@
 import type { userInfo } from '../src/api/user/type'
+import mockJS from 'mockjs'
 
 //用户信息数据
 const users = [
@@ -7,8 +8,11 @@ const users = [
     avatar:
       'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
     username: 'admin',
+    name: '张三',
     password: '111111',
     phone: '123456',
+    department: '董事会',
+    position: '总经理',
     desc: '平台管理员',
     roles: ['平台管理员'],
     buttons: ['cuser.detail'],
@@ -20,8 +24,11 @@ const users = [
     avatar:
       'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
     username: 'system',
+    name: '李四',
     password: '111111',
     phone: '123456',
+    department: '技术部',
+    position: '产品经理',
     desc: '系统管理员',
     roles: ['系统管理员'],
     buttons: ['cuser.detail', 'cuser.user'],
@@ -32,35 +39,12 @@ const users = [
     userId: 10,
     avatar:
       'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
-    username: '张三',
+    username: '194515',
+    name: '王五',
     password: '111111',
     phone: '123456',
-    desc: '员工',
-    roles: ['员工'],
-    buttons: ['cuser.detail', 'cuser.user'],
-    routes: ['home'],
-    token: 'System Token',
-  },
-  {
-    userId: 11,
-    avatar:
-      'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
-    username: '李四',
-    password: '111111',
-    phone: '123456',
-    desc: '员工',
-    roles: ['员工'],
-    buttons: ['cuser.detail', 'cuser.user'],
-    routes: ['home'],
-    token: 'System Token',
-  },
-  {
-    userId: 12,
-    avatar:
-      'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
-    username: '王五',
-    password: '111111',
-    phone: '123456',
+    department: '技术部',
+    position: '产品经理',
     desc: '员工',
     roles: ['员工'],
     buttons: ['cuser.detail', 'cuser.user'],
@@ -68,13 +52,44 @@ const users = [
     token: 'System Token',
   },
 ]
+// 随机生成用户数据保存在初始用户数据中
+const data = mockJS.mock({
+  'dataList|10': [
+    {
+      'userId|+1': 13,
+      phone: /^1[0-9]{10}$/,
+      username: function () {
+        return this.phone
+      },
+      name: '@cname',
+      avatar: function () {
+        return mockJS.Random.image(
+          '200x200',
+          mockJS.Random.color(),
+          '#FFF',
+          this.name,
+        )
+      },
+      password: '@string("number", 6)',
+      'department|1': ['董事会', '人事部', '财务部', '技术部'],
+      position: '@ctitle(2, 4)',
+      desc: '@cword(2, 4)',
+      'roles|1': ['员工', '实习生', '临时工'],
+      buttons: ['cuser.detail', 'cuser.user'],
+      routes: ['home'],
+      token: mockJS.Random.guid(),
+    },
+  ],
+})
+data.dataList.forEach((element) => {
+  users.push(element)
+})
 
 // 将用户数据分页数据
 // 总数, 页码, 单页限制数据
-// 未完善总用户数据
 function getUserList(page, limit) {
   const userList: userInfo[][] = []
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < Math.ceil(users.length / limit); i++) {
     const row: userInfo[] = []
     for (let j = 0; j < limit; j++) {
       const index = i * limit + j
@@ -86,21 +101,7 @@ function getUserList(page, limit) {
     }
     userList.push(row)
   }
-  users.push({
-    userId: Math.random() * 100,
-    avatar:
-      'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
-    username: '张三',
-    password: '111111',
-    phone: '123456',
-    desc: '员工',
-    roles: ['员工'],
-    buttons: ['cuser.detail', 'cuser.user'],
-    routes: ['home'],
-    token: 'System Token',
-  })
-
-  return userList[page - 1]
+  return userList
 }
 
 export default [
@@ -124,7 +125,7 @@ export default [
       return { code: 200, data: { token } }
     },
   },
-  // 获取用户信息
+  // 登录获取本地用户信息接口
   {
     url: '/api/user/info',
     method: 'get',
@@ -141,7 +142,7 @@ export default [
       return { code: 200, data: { checkUser } }
     },
   },
-  // 分页
+  // 获取用户分页信息接口
   {
     url: '/api/acl/user/:page/:limit',
     method: 'get',
@@ -157,7 +158,100 @@ export default [
         }
       }
       //如果有返回成功信息
-      return { code: 200, data: { userList, total: 5 } }
+      return {
+        code: 200,
+        data: { userList: userList[page - 1], total: users.length, data },
+      }
+    },
+  },
+  // 根据用户名查询用户
+  {
+    url: '/api/acl/serachuser',
+    method: 'post',
+    response: ({ body }) => {
+      const index = users.findIndex((user) => user.name === body.name)
+
+      // 没有返回失败的信息
+      if (index === -1) {
+        return {
+          code: 201,
+          data: { message: '未查询到该用户' },
+        }
+      }
+      // 如果有返回成功信息
+      return {
+        code: 200,
+        data: { message: '添加用户成功' + body, user: [users[index]] },
+      }
+    },
+  },
+  //添加用户接口
+  {
+    url: '/api/acl/adduser',
+    method: 'post',
+    response: ({ body }) => {
+      // 没有返回失败的信息
+      if (!body) {
+        return {
+          code: 201,
+          data: { message: '上传用户信息失败' },
+        }
+      }
+      users.unshift(body)
+
+      // 如果有返回成功信息
+      return {
+        code: 200,
+        data: { message: '添加用户成功' },
+      }
+    },
+  },
+  //修改用户信息接口
+  {
+    url: '/api/acl/editUser',
+    method: 'post',
+    response: ({ body }) => {
+      // 没有返回失败的信息
+      if (!body) {
+        return {
+          code: 201,
+          data: { message: '修改用户信息失败' },
+        }
+      }
+      const index = users.findIndex((user) => user.userId === body.userId)
+      users[index] = body
+
+      // 如果有返回成功信息
+      return {
+        code: 200,
+        data: {
+          message: '修改用户信息成功',
+        },
+      }
+    },
+  },
+  //删除用户接口
+  {
+    url: '/api/acl/deleteuser',
+    method: 'post',
+    response: ({ body }) => {
+      // 没有返回失败的信息
+      if (!body) {
+        return {
+          code: 201,
+          data: { message: '获取用户信息失败' },
+        }
+      }
+      const index = users.findIndex((user) => user.userId === body)
+      users.splice(index, 1)
+
+      // 如果有返回成功信息
+      return {
+        code: 200,
+        data: {
+          message: '删除用户成功',
+        },
+      }
     },
   },
 ]

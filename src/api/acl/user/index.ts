@@ -30,7 +30,7 @@ export const reqAddUser = (data: any) => {
       data.name,
     )
   }
-  request.post<any>(API.ADDUSER_URL, data)
+  return request.post<any>(API.ADDUSER_URL, data)
 }
 
 // 修改用户信息
@@ -38,5 +38,5 @@ export const reqEditUser = (data: any) =>
   request.post<any>(API.EDITUSER_URL, data)
 
 // 删除用户信息的方法
-export const reqDeleteUser = (data: number[]) =>
+export const reqDeleteUser = (data: number) =>
   request.post<any>(API.DELETESUSER_URL, data)
