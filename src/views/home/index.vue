@@ -1,11 +1,11 @@
 <template>
   <el-row gutter="20">
     <el-col :span="17">
-      <el-card class="hello">你好,{{ userStore.username }}</el-card>
-      <el-card class="fastReq">快速申请</el-card>
+      <hello />
+      <fastReq />
     </el-col>
     <el-col :span="7">
-      <el-card class="signin">考勤打卡</el-card>
+      <signin />
     </el-col>
   </el-row>
   <el-row gutter="20">
@@ -19,17 +19,15 @@
 </template>
 
 <script setup lang="ts">
-import useUserStore from '@/store/modules/user'
-let userStore = useUserStore()
+import hello from './components/hello.vue'
+import fastReq from './components/fastReq.vue'
+import signin from './components/signin.vue'
 </script>
 
 <style lang="scss" scoped>
 .el-row {
   margin-bottom: 20px;
-  .hello {
-    margin-bottom: 20px;
-    height: 120px;
-  }
+
   .signin {
     height: 260px;
   }
