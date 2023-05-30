@@ -19,6 +19,8 @@ const useUserStore = defineStore('User', {
       menuRoute: constantRoute,
       username: '',
       avatar: '',
+      department: '',
+      position: '',
     }
   },
   // 异步|逻辑方法
@@ -47,6 +49,8 @@ const useUserStore = defineStore('User', {
       if (result.code === 200) {
         this.username = result.data.checkUser.username
         this.avatar = result.data.checkUser.avatar
+        this.department = result.data.checkUser.department
+        this.position = result.data.checkUser.position
         return 'OK'
       } else {
         return Promise.reject('获取用户信息失败')
@@ -58,6 +62,8 @@ const useUserStore = defineStore('User', {
       this.token = ''
       this.username = ''
       this.avatar = ''
+      this.department = ''
+      this.position = ''
       REMOVE_TOKEN()
     },
   },
