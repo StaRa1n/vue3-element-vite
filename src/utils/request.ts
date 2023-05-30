@@ -1,6 +1,6 @@
 // axios二次封装: 使用请求与响应拦截器
 import axios from 'axios'
-import { ElMessage } from 'element-plus'
+import { ElMessage } from 'Element-plus'
 
 // 引入用户相关的仓库
 import useUserStore from '@/store/modules/user'

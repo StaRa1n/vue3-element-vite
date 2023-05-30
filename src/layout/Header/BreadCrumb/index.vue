@@ -27,7 +27,6 @@ let LayOutSettingStore = useLayOutSettingStore()
 const changeIcon = () => {
   LayOutSettingStore.fold = !LayOutSettingStore.fold
   rotate = !rotate
-  console.log(rotate)
 }
 
 let $Route = useRoute()

@@ -244,7 +244,6 @@ export default [
       }
       const index = users.findIndex((user) => user.userId === body)
       users.splice(index, 1)
-
       // 如果有返回成功信息
       return {
         code: 200,

@@ -34,12 +34,7 @@
     >
       <el-table-column type="selection" align="center" />
       <el-table-column label="ID" align="center" prop="userId" width="50" />
-      <el-table-column
-        label="登录账号"
-        align="center"
-        prop="username"
-        width="120"
-      />
+      <el-table-column label="登录账号" align="center" prop="username" />
       <el-table-column label="用户姓名" align="center" prop="name" />
       <el-table-column label="所在部门" align="center" prop="department" />
       <el-table-column
@@ -129,7 +124,7 @@ onMounted(async () => {
 
 // 删除单个用户(传入用户id)
 const deleteUser = async (row: any) => {
-  let result = await reqDeleteUser(row.userId)
+  let result: any = await reqDeleteUser(row.userId)
   if (result.code === 200) {
     console.log(result.data.message)
   }

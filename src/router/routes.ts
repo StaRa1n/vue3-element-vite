@@ -86,7 +86,7 @@ export const constantRoute = [
         component: () => import('@/views/acl/user/index.vue'),
         name: 'user',
         meta: {
-          title: '用户管理',
+          title: '员工管理',
           icon: 'User',
         },
       },

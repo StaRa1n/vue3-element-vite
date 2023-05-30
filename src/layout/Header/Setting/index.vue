@@ -50,6 +50,7 @@ const fullScreen = () => {
   }
 }
 
+// 退出登录
 const logout = () => {
   // 1.向服务器发请求[退出登录接口]
   // 2.仓库中用户登录的相关数据清空[token|username|avatar]
