@@ -9,11 +9,11 @@
   >
     <img :src="userStore.avatar" alt="" />
     <div class="name">
-      <div>您好, {{ userStore.username }},祝您开心每一天</div>
+      <div>您好, {{ userStore.name }},祝您开心每一天</div>
       <div>{{ userStore.position }} | {{ userStore.department }}</div>
     </div>
     <div class="time">
-      <p>当前时间</p>
+      <p>当前时间:</p>
       <div>{{ time.toLocaleDateString() }}</div>
       <div>{{ time.toLocaleTimeString() }}</div>
     </div>
@@ -41,12 +41,13 @@ setInterval(() => {
   }
   .name {
     :first-child {
+      color: $font-color;
       font-size: 20px;
       margin-bottom: 20px;
     }
     :last-child {
       font-size: 14px;
-      color: #787373;
+      color: #9ca3af;
     }
   }
   .name {
@@ -54,6 +55,14 @@ setInterval(() => {
   }
   .time {
     align-self: center;
+    p {
+      color: $font-color;
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+    div {
+      color: #9ca3af;
+    }
   }
 }
 </style>

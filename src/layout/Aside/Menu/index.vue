@@ -41,10 +41,8 @@
           </el-icon>
           <span>{{ menu.meta.title }}</span>
         </template>
-        <el-menu-item-group>
-          <!-- 递归组件 -->
-          <Menu :menuList="menu.children"></Menu>
-        </el-menu-item-group>
+        <!-- 递归组件 -->
+        <Menu :menuList="menu.children"></Menu>
       </el-sub-menu>
     </template>
   </template>

@@ -6,12 +6,12 @@
     icon="FullScreen"
     @click="fullScreen"
   ></el-button>
-  <el-button type="primary" circle icon="Setting"></el-button>
+  <el-button type="primary" circle icon="Bell"></el-button>
   <img :src="userStore.avatar" style="height: 32px" class="logo" />
   <!-- 下拉菜单 -->
   <el-dropdown>
     <span class="el-dropdown-link">
-      {{ userStore.username }}
+      {{ userStore.name }}
       <el-icon class="el-icon--right">
         <arrow-down />
       </el-icon>
@@ -63,5 +63,11 @@ const logout = () => {
 <style scoped>
 .logo {
   margin-left: 12px;
+}
+img {
+  border-radius: 50px;
+  height: 32px;
+  width: 32px;
+  margin-right: 15px;
 }
 </style>

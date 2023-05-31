@@ -17,7 +17,7 @@ const useUserStore = defineStore('User', {
     return {
       token: GET_TOKEN(), // 用户的唯一标识
       menuRoute: constantRoute,
-      username: '',
+      name: '',
       avatar: '',
       department: '',
       position: '',
@@ -47,7 +47,7 @@ const useUserStore = defineStore('User', {
       const result = await reqUserInfo()
 
       if (result.code === 200) {
-        this.username = result.data.checkUser.username
+        this.name = result.data.checkUser.name
         this.avatar = result.data.checkUser.avatar
         this.department = result.data.checkUser.department
         this.position = result.data.checkUser.position
@@ -60,7 +60,7 @@ const useUserStore = defineStore('User', {
     async userLogout() {
       // 目前没有mock接口: 退出登录接口(通知服务器本地用户唯一标识失效)
       this.token = ''
-      this.username = ''
+      this.name = ''
       this.avatar = ''
       this.department = ''
       this.position = ''
