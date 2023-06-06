@@ -1,10 +1,12 @@
 <template>
   <el-form :inline="true">
     <el-form-item>
+      <!-- 将添加用户放在这便于代码编写 -->
       <el-button type="primary" @click="openDialog">添加用户</el-button>
       <el-dialog
         v-model="dialogAddUser"
         :title="dialogAddUser === 'editUser' ? '编辑员工' : '添加员工'"
+        style="min-width: 750px"
       >
         <el-form
           :model="form"
@@ -64,7 +66,7 @@
         </el-form>
         <span class="dialog-footer">
           <el-button type="primary" @click="save">保存</el-button>
-          <el-button type="primary" @click="dialogAddUser = false">
+          <el-button type="default" @click="dialogAddUser = false">
             退出
           </el-button>
         </span>
@@ -133,9 +135,10 @@ const openDialog = () => {
 const save = async () => {
   // 保证表单通过校验
   await formRef.value.validate()
+
   if (dialogAddUser.value === 'addUser') {
     // 请求添加员工
-    const result = await reqAddUser(form)
+    const result: any = await reqAddUser(form)
     if (result.code === 200) {
       // 点击后更新数据并关闭对话框
       ElMessage.success(result.data.message)
@@ -156,15 +159,15 @@ watch(props.editUserData, () => {
   dialogAddUser.value = 'editUser'
   form = Object.assign(form, props.editUserData)
 })
-// 表单校验规则
-const usernameRule = (rule: any, value: any, callBack: any) => {
-  //
-  if (value.trim().length >= 5) {
-    callBack()
-  } else {
-    callBack(new Error('登录账号至少为五位'))
-  }
-}
+// 表单校验规则(废弃)
+// const usernameRule = (rule: any, value: any, callBack: any) => {
+//   //
+//   if (value.trim().length >= 5) {
+//     callBack()
+//   } else {
+//     callBack(new Error('登录账号至少为五位'))
+//   }
+// }
 const rules = {
   name: [
     {
@@ -173,7 +176,14 @@ const rules = {
       message: '请输入员工姓名',
     },
   ],
-  username: [{ required: true, trigger: 'blur', validator: usernameRule }],
+  username: [
+    {
+      required: true,
+      trigger: 'blur',
+      min: 5,
+      message: '账号长度至少为5位',
+    },
+  ],
   phone: [
     {
       required: true,
@@ -183,7 +193,7 @@ const rules = {
       message: '请输入11位电话号码',
     },
   ],
-  password: [{ trigger: 'blur', min: 2, message: '密码长度至少为6位' }],
+  password: [{ trigger: 'blur', min: 6, message: '密码长度至少为6位' }],
   role: [{ trigger: 'blur', required: true, message: '请选择员工类型' }],
 }
 </script>

@@ -163,6 +163,7 @@ const showdian = (Date: any) => {
         padding: 0.5rem;
         height: 35px;
         line-height: 35px;
+        cursor: pointer;
         :hover {
           border-radius: 15px;
           background-color: #d3c8c8;

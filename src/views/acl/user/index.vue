@@ -1,82 +1,84 @@
 <template>
-  <el-card class="seach_card">
-    <el-form :inline="true" ref="form">
-      <el-form-item class="form_item" label="用户名:" :inline="true">
-        <el-input placeholder="请输入用户名" v-model="name"></el-input>
-      </el-form-item>
-      <el-form-item class="form_item">
-        <el-button type="primary" @click="searchUser">查询</el-button>
-      </el-form-item>
-      <el-form-item class="form_item">
-        <el-button type="danger" @click="reset">重置</el-button>
-      </el-form-item>
-    </el-form>
-  </el-card>
-  <el-card>
-    <!-- 顶部按钮 -->
-    <FromAddUser :getUserList="getUserList" :editUserData="editUserData">
-      <template #deleteButton>
-        <el-form-item>
-          <el-button type="danger" @click="deleteSlectedUsers">
-            批量删除
-          </el-button>
+  <div id="min-width">
+    <el-card class="seach_card">
+      <el-form :inline="true" ref="form">
+        <el-form-item class="form_item" label="用户名:" :inline="true">
+          <el-input placeholder="请输入用户名" v-model="name"></el-input>
         </el-form-item>
-      </template>
-    </FromAddUser>
-    <!-- 用户列表 -->
-
-    <el-table
-      class="user_table"
-      stripe="true"
-      border="true"
-      :data="userArr"
-      @selection-change="selectUser"
-    >
-      <el-table-column type="selection" align="center" />
-      <el-table-column label="ID" align="center" prop="userId" width="50" />
-      <el-table-column label="登录账号" align="center" prop="username" />
-      <el-table-column label="用户姓名" align="center" prop="name" />
-      <el-table-column label="所在部门" align="center" prop="department" />
-      <el-table-column
-        label="岗位职称"
-        align="center"
-        prop="roles"
-        show-overflow-tooltip
-      />
-      <el-table-column label="操作" align="center" width="280">
-        <template #="{ row }">
-          <el-button type="primary" size="small" icon="User">暂定</el-button>
-          <el-button
-            type="primary"
-            size="small"
-            icon="Edit"
-            @click="editUser(row)"
-          >
-            编辑
-          </el-button>
-          <el-button
-            type="danger"
-            size="small"
-            icon="Delete"
-            @click="deleteUser(row)"
-          >
-            删除
-          </el-button>
+        <el-form-item class="form_item">
+          <el-button type="primary" @click="searchUser">查询</el-button>
+        </el-form-item>
+        <el-form-item class="form_item">
+          <el-button type="danger" @click="reset">重置</el-button>
+        </el-form-item>
+      </el-form>
+    </el-card>
+    <el-card>
+      <!-- 顶部按钮 -->
+      <FromAddUser :getUserList="getUserList" :editUserData="editUserData">
+        <template #deleteButton>
+          <el-form-item>
+            <el-button type="danger" @click="deleteSlectedUsers">
+              批量删除
+            </el-button>
+          </el-form-item>
         </template>
-      </el-table-column>
-    </el-table>
-    <!-- 分页器 -->
-    <el-pagination
-      v-model:current-page="pageNo"
-      v-model:page-size="pageSize"
-      :page-sizes="[5, 7, 9, 11]"
-      small="true"
-      layout="prev, pager, next, jumper, ->,total,sizes"
-      :total="total"
-      @size-change="getUserList"
-      @current-change="getUserList"
-    />
-  </el-card>
+      </FromAddUser>
+      <!-- 用户列表 -->
+
+      <el-table
+        class="user_table"
+        stripe="true"
+        border="true"
+        :data="userArr"
+        @selection-change="selectUser"
+      >
+        <el-table-column type="selection" align="center" />
+        <el-table-column label="ID" align="center" prop="userId" width="50" />
+        <el-table-column label="登录账号" align="center" prop="username" />
+        <el-table-column label="用户姓名" align="center" prop="name" />
+        <el-table-column label="所在部门" align="center" prop="department" />
+        <el-table-column
+          label="岗位职称"
+          align="center"
+          prop="roles"
+          show-overflow-tooltip
+        />
+        <el-table-column label="操作" align="center" width="280">
+          <template #default="{ row }">
+            <el-button type="primary" size="small" icon="User">暂定</el-button>
+            <el-button
+              type="primary"
+              size="small"
+              icon="Edit"
+              @click="editUser(row)"
+            >
+              编辑
+            </el-button>
+            <el-button
+              type="danger"
+              size="small"
+              icon="Delete"
+              @click="deleteUser(row)"
+            >
+              删除
+            </el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <!-- 分页器 -->
+      <el-pagination
+        v-model:current-page="pageNo"
+        v-model:page-size="pageSize"
+        :page-sizes="[5, 7, 9, 11]"
+        small="true"
+        layout="prev, pager, next, jumper, ->,total,sizes"
+        :total="total"
+        @size-change="getUserList"
+        @current-change="getUserList"
+      />
+    </el-card>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -145,13 +147,13 @@ const deleteSlectedUsers = () => {
 // 查询用户
 const name = ref()
 const searchUser = async () => {
-  const result = await reqUserInfo({ name: name.value })
+  const result: any = await reqUserInfo({ name: name.value })
   if (result.code === 200) {
     userArr.value = result.data.user
     total.value = 1
     console.log(result)
   } else {
-    ElMessage.error(ressult.data.message)
+    ElMessage.error(result.data.message)
   }
 }
 
@@ -163,6 +165,9 @@ const reset = () => {
 </script>
 
 <style scoped lang="scss">
+#min-width {
+  min-width: 1000px;
+}
 .seach_card {
   display: flex;
   align-items: center;
