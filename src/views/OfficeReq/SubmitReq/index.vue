@@ -54,11 +54,7 @@
           <el-input type="textarea" autosize v-model="reqData.reason" />
         </el-form-item>
         <el-form-item label="添加图片">
-          <el-upload
-            v-model:file-list="fileList"
-            action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15"
-            list-type="picture-card"
-          >
+          <el-upload action="#" list-type="picture-card" :auto-upload="false">
             <el-icon><Plus /></el-icon>
           </el-upload>
         </el-form-item>
@@ -72,24 +68,28 @@
 </template>
 
 <script setup lang="ts">
-import { ref, nextTick } from 'vue'
+import { ref, reactive, nextTick } from 'vue'
 import reqtype from './reqtype'
-import { reactive } from 'vue'
+import { applyAddReq } from '@/api/ReqOffice'
 
 // 对话框类型
 const dialogType = ref()
-const fileList = ref('')
+let formRef = ref()
 
+// 表单信息
 let reqData = reactive({
   id: null,
-  applicant: null,
-  type: null,
-  subTime: null,
-  startTime: null,
-  endTime: null,
-  reason: null,
-  status: null,
+  applicant: localStorage.getItem('TOKEN') as string,
+  name: localStorage.getItem('NAME') as string,
+  Approver: '张三',
+  type: '',
+  subTime: '',
+  startTime: '',
+  endTime: '',
+  reason: '',
+  status: '',
 })
+
 const rules = {
   type: [
     {
@@ -143,9 +143,6 @@ const options = [
     label: '其他',
   },
 ]
-
-let formRef = ref()
-
 // 打开对话框
 const opendialog = (type: string) => {
   dialogType.value = type
@@ -154,13 +151,15 @@ const opendialog = (type: string) => {
     // 恢复表单初始值
     reqData = Object.assign(reqData, {
       id: null,
-      applicant: null,
-      type: null,
+      applicant: localStorage.getItem('TOKEN') as string,
+      name: localStorage.getItem('NAME') as string,
+      Approver: '张三',
+      type: '',
       subTime: null,
       startTime: null,
       endTime: null,
-      reason: null,
-      status: null,
+      reason: '',
+      status: '',
     })
     // 清空上一次错误的提示信息
     formRef.value.clearValidate('type')
@@ -177,13 +176,28 @@ const aftercolse = () => {
     dialogType.value = false
   }, 100)
 }
+
 // 提交表单
 const submitReq = async () => {
+  // 确定表单的校验
   await formRef.value.validate()
-  ElMessage.success({
-    message: '提交成功',
-    showClose: true,
-  })
+  reqData.subTime = new Date().toJSON()
+  const result: any = await applyAddReq(reqData)
+  console.log(result)
+
+  if (result.code === 201) {
+    // eslint-disable-next-line no-undef
+    ElMessage.error({
+      message: result.data.message,
+      showClose: true,
+    })
+  } else {
+    // eslint-disable-next-line no-undef
+    ElMessage.success({
+      message: result.data.message,
+      showClose: true,
+    })
+  }
   cancel()
 }
 

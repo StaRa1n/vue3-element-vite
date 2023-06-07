@@ -6,7 +6,13 @@ import { reqLogin, reqUserInfo } from '@/api/user'
 import { loginForm, loginResponseData } from '@/api/user/type'
 import { userState } from './types/types'
 // 引入操作本地存储的工具方法
-import { SET_TOKEN, GET_TOKEN, REMOVE_TOKEN } from '@/utils/token'
+import {
+  SET_TOKEN,
+  GET_TOKEN,
+  REMOVE_TOKEN,
+  SET_NAME,
+  REMOVE_NAME,
+} from '@/utils/token'
 // 引入路由(常量)
 import { constantRoute } from '@/router/routes'
 
@@ -51,6 +57,7 @@ const useUserStore = defineStore('User', {
         this.avatar = result.data.checkUser.avatar
         this.department = result.data.checkUser.department
         this.position = result.data.checkUser.position
+        SET_NAME(result.data.checkUser.name as string)
         return 'OK'
       } else {
         return Promise.reject('获取用户信息失败')
@@ -64,6 +71,7 @@ const useUserStore = defineStore('User', {
       this.avatar = ''
       this.department = ''
       this.position = ''
+      REMOVE_NAME()
       REMOVE_TOKEN()
     },
   },

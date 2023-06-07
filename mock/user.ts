@@ -49,7 +49,7 @@ const users = [
     roles: ['员工'],
     buttons: ['cuser.detail', 'cuser.user'],
     routes: ['home'],
-    token: 'System Token',
+    token: 'User Token',
   },
 ]
 // 随机生成用户数据保存在初始用户数据中
@@ -72,7 +72,7 @@ const data = mockJS.mock({
       },
       password: '@string("number", 6)',
       'department|1': ['董事会', '人事部', '财务部', '技术部'],
-      position: '@ctitle(2, 4)',
+      'position|1': ['总经理', '产品经理', '普通员工'],
       desc: '@cword(2, 4)',
       'roles|1': ['员工', '实习生', '临时工'],
       buttons: ['cuser.detail', 'cuser.user'],
@@ -87,7 +87,7 @@ data.dataList.forEach((element) => {
 
 // 将用户数据分页数据
 // 总数, 页码, 单页限制数据
-function getUserList(page, limit) {
+function getUserList(page: number, limit: number) {
   const userList: userInfo[][] = []
   for (let i = 0; i < Math.ceil(users.length / limit); i++) {
     const row: userInfo[] = []
@@ -220,7 +220,6 @@ export default [
       }
       const index = users.findIndex((user) => user.userId === body.userId)
       users[index] = body
-
       // 如果有返回成功信息
       return {
         code: 200,
