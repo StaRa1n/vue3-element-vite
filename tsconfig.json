@@ -18,7 +18,14 @@
       "@/*": ["src/*"]
     }
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue",
+    "src/assets/icons/reqicon.js",
+    "src/views/OfficeReq/SubmitReq/reqtype.ts"
+  ],
   "references": [
     {
       "path": "./tsconfig.node.json"

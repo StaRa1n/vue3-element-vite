@@ -112,7 +112,7 @@ const editUser = (row: any) => {
 
 // 用户数据分页展示
 const getUserList = async () => {
-  const result = await reqUserList(pageNo.value, pageSize.value)
+  const result: any = await reqUserList(pageNo.value, pageSize.value)
   if (result.code === 200) {
     userArr.value = result.data.userList
     total.value = result.data.total

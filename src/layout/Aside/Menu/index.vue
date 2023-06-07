@@ -64,6 +64,7 @@ const handleSelect = (path: any) => {
 <script lang="ts">
 // 递归组件
 export default {
+  // eslint-disable-next-line vue/no-reserved-component-names
   name: 'Menu',
 }
 </script>

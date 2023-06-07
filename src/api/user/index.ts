@@ -3,7 +3,7 @@ import request from '@/utils/request'
 
 import type { loginForm, loginResponseData, userInfoReponseData } from './type'
 
-// 统一管理项目用户相关的接口
+// 统一管理项目用户相关的URL
 enum API {
   LOGIN_URL = '/user/login',
   USERINFO_URL = '/user/info',
