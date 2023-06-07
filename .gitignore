@@ -25,3 +25,5 @@ dist-ssr
 
 # element自动导入
 components.d.ts
+
+bug.md
