@@ -41,23 +41,44 @@ const req = [
 ]
 
 export default [
-  // 获取申请信息接口
+  // 获取申请信息接口(个人)
   {
     url: '/api/ReqOffice/reqlist/:reqStatus',
     method: 'get',
     response: (request) => {
       //获取请求头携带token
       const token = request.headers.token
-      const reqStatus = request.query
+      const { reqStatus } = request.query
       //查看用户信息是否包含有次token用户
       let reqList = req.filter((item) => item.applicant === token)
       //没有返回失败的信息
-      if (!req) {
+      if (!reqList) {
         return { code: 201, data: { message: '获取申请列表失败' } }
       }
       //如果有返回成功信息
-      if (reqStatus !== '') {
+      if (reqStatus !== '全部') {
         reqList = reqList.filter((item) => item.status === reqStatus)
+      }
+      return { code: 200, data: { reqList } }
+    },
+  },
+  // 获取申请信息接口(管理)
+  {
+    url: '/api/ReqOffice/managereqlist/:name/:reqStatus',
+    method: 'get',
+    response: (request) => {
+      const { name, reqStatus } = request.query
+      //查看用户信息是否包含有次token用户
+      let reqList = req.filter((item) => item.Approver === name)
+      //没有返回失败的信息
+      if (!reqList) {
+        return { code: 201, data: { message: '获取申请列表失败' } }
+      }
+      //如果有返回成功信息
+      if (reqStatus === '待审核') {
+        reqList = reqList.filter((item) => item.status === '待审核')
+      } else if (reqStatus === '已审核') {
+        reqList = reqList.filter((item) => item.status !== '待审核')
       }
       return { code: 200, data: { reqList } }
     },
@@ -75,11 +96,31 @@ export default [
       } else {
         // 加工data
         data.id = req.length + 1
-        data.status = '待审核'
+        data.status = '待审批'
         req.push(data)
       }
       //如果有返回成功信息
       return { code: 200, data: { req, message: '提交申请成功' } }
+    },
+  },
+
+  // 添加申请信息接口
+  {
+    url: '/api/ReqOffice/deletereq',
+    method: 'post',
+    response: (request) => {
+      //获取表单信息
+      const ReqId = request.body
+      //没有则返回失败的信息
+      if (!ReqId) {
+        return { code: 201, data: { message: '删除失败,未获取到申请信息' } }
+      } else {
+        // 加工data
+        const index = req.findIndex((item) => item.id === ReqId)
+        req.splice(index, 1)
+      }
+      //如果有返回成功信息
+      return { code: 200, data: { message: '删除申请成功' } }
     },
   },
 ]

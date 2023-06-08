@@ -1,7 +1,7 @@
 <template>
   <el-card class="box-card">
     <el-menu default-active="1" mode="horizontal">
-      <el-menu-item index="1" @click="reqStatus = ''">全部</el-menu-item>
+      <el-menu-item index="1" @click="reqStatus = '全部'">全部</el-menu-item>
       <el-menu-item index="2" @click="reqStatus = '待审批'">
         待审批
       </el-menu-item>
@@ -35,7 +35,14 @@
           >
             编辑
           </el-button>
-          <el-button type="danger" size="small" icon="Delete">删除</el-button>
+          <el-button
+            type="danger"
+            size="small"
+            icon="Delete"
+            @click="deleteReq(row)"
+          >
+            删除
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -47,9 +54,10 @@
       small="true"
       layout="prev, pager, next, jumper, ->,total,sizes"
       :total="total"
-      @size-change="console.log(111)"
-      @current-change="console.log(111)"
+      @size-change="getReqList"
+      @current-change="getReqList"
     />
+    <!-- 对话框 -->
     <el-dialog
       :model-value="dialogStatus"
       :title="dialogReq.type"
@@ -104,8 +112,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, reactive } from 'vue'
-import { applyReqList } from '@/api/ReqOffice'
+import { ref, onMounted, reactive, watch } from 'vue'
+import { applyReqList, applyDeleteReq } from '@/api/ReqOffice'
 import type { reqInfo } from '@/api/ReqOffice/type'
 // 首次展示页号
 let pageNo = ref(1)
@@ -131,10 +139,10 @@ let dialogReq: reqInfo = reactive({
   status: '',
 })
 // 筛选审批状态
-let reqStatus = ref()
+let reqStatus = ref('全部')
 // 获取本人申请列表
 const getReqList = async () => {
-  const result: any = await applyReqList()
+  const result: any = await applyReqList(reqStatus.value)
   if (result.code === 200) {
     reqList.value = result.data.reqList
     total.value = reqList.value.length
@@ -144,6 +152,10 @@ const getReqList = async () => {
 }
 // 初始化界面
 onMounted(async () => {
+  getReqList()
+})
+
+watch(reqStatus, () => {
   getReqList()
 })
 
@@ -160,8 +172,25 @@ const editReq = (data: any) => {
   dialogReq = Object.assign(dialogReq, data)
 }
 
+// 删除
+const deleteReq = async (data: any) => {
+  const result: any = await applyDeleteReq(data.id)
+  if (result.code === 201) {
+    ElMessage.error({
+      message: result.data.message,
+      showClose: true,
+    })
+  } else {
+    ElMessage.success({
+      message: result.data.message,
+      showClose: true,
+    })
+  }
+  getReqList()
+}
+
 // 保存修改
-const saveChange = () => {
+const saveChange = async () => {
   console.log('保存修改')
 }
 </script>
@@ -171,5 +200,8 @@ const saveChange = () => {
   width: 100%;
   height: 100%;
   min-width: 1200px;
+}
+.user_table {
+  margin-bottom: 8px;
 }
 </style>
