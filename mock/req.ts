@@ -104,7 +104,26 @@ export default [
     },
   },
 
-  // 添加申请信息接口
+  {
+    url: '/api/ReqOffice/editreq',
+    method: 'post',
+    response: (request) => {
+      //获取表单信息
+      const data = request.body
+      //没有则返回失败的信息
+      if (!data) {
+        return { code: 201, data: { message: '保存信息失败' } }
+      } else {
+        // 加工data
+        const index = req.findIndex((item) => item.id === data.id)
+        req[index] = data
+      }
+      //如果有返回成功信息
+      return { code: 200, data: { req, message: '修改申请成功' } }
+    },
+  },
+
+  // 删除申请信息接口
   {
     url: '/api/ReqOffice/deletereq',
     method: 'post',
@@ -121,6 +140,28 @@ export default [
       }
       //如果有返回成功信息
       return { code: 200, data: { message: '删除申请成功' } }
+    },
+  },
+  // 审核申请信息接口
+  {
+    url: '/api/ReqOffice/changereqstatus',
+    method: 'post',
+    response: (request) => {
+      //获取表单信息
+      const { ReqId, status } = request.body
+      //没有则返回失败的信息
+      if (!ReqId) {
+        return { code: 201, data: { message: '审核失败,未获取到申请信息' } }
+      } else {
+        // 加工data
+        req.forEach((item) => {
+          if (item.id === ReqId) {
+            item.status = status
+          }
+        })
+      }
+      //如果有返回成功信息
+      return { code: 200, data: { message: '审批成功' } }
     },
   },
 ]

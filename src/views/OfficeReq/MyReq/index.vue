@@ -18,14 +18,15 @@
       <el-table-column label="申请人" align="center" prop="name" width="120" />
       <el-table-column label="申请时间" align="center" prop="subTime" />
       <el-table-column label="审批类型" align="center" prop="type" />
-      <el-table-column
-        label="当前审批人"
-        align="center"
-        prop="Approver"
-        show-overflow-tooltip
-      />
-      <el-table-column label="审批状态" align="center" prop="status" />
-      <el-table-column label="操作" align="center">
+      <el-table-column label="当前审批人" align="center" prop="Approver" />
+      <el-table-column label="审批状态" align="center" prop="status">
+        <template #default="{ row }">
+          <el-button :type="btnStatus(row.status)" size="small">
+            {{ row.status }}
+          </el-button>
+        </template>
+      </el-table-column>
+      <el-table-column label="操作" align="center" min-width="140px">
         <template #default="{ row }">
           <el-button
             type="primary"
@@ -69,9 +70,12 @@
           {{ dialogReq.id }}
         </el-form-item>
         <el-form-item label="申请状态">
-          <el-button type="warning" size="small">
+          <el-button :type="btnStatus(dialogReq.status)" size="small">
             {{ dialogReq.status }}
           </el-button>
+        </el-form-item>
+        <el-form-item label="申请人">
+          {{ dialogReq.name }}
         </el-form-item>
         <el-form-item label="当前审批人">
           {{ dialogReq.Approver }}
@@ -113,7 +117,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, reactive, watch } from 'vue'
-import { applyReqList, applyDeleteReq } from '@/api/ReqOffice'
+import { applyReqList, applyDeleteReq, applyEditReq } from '@/api/ReqOffice'
 import type { reqInfo } from '@/api/ReqOffice/type'
 // 首次展示页号
 let pageNo = ref(1)
@@ -191,7 +195,32 @@ const deleteReq = async (data: any) => {
 
 // 保存修改
 const saveChange = async () => {
-  console.log('保存修改')
+  const result: any = await applyEditReq(dialogReq)
+  if (result.code === 201) {
+    ElMessage.error({
+      message: result.data.message,
+      showClose: true,
+    })
+  } else {
+    ElMessage.success({
+      message: result.data.message,
+      showClose: true,
+    })
+  }
+  dialogStatus.value = false
+  getReqList()
+}
+
+// 状态按钮颜色
+const btnStatus = (status: string) => {
+  switch (status) {
+    case '待审批':
+      return 'warning'
+    case '已通过':
+      return 'success'
+    case '已拒绝':
+      return 'danger'
+  }
 }
 </script>
 

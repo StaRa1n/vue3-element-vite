@@ -21,24 +21,49 @@
         prop="Approver"
         show-overflow-tooltip
       />
-      <el-table-column label="审批状态" align="center" prop="status" />
-      <el-table-column label="操作" align="center">
+      <el-table-column label="审批状态" align="center" prop="status">
+        <template #default="{ row }">
+          <el-button :type="btnStatus(row.status)" size="small">
+            {{ row.status }}
+          </el-button>
+        </template>
+      </el-table-column>
+      <el-table-column label="操作" align="center" min-width="160px">
         <template #default="{ row }">
           <el-button
             type="primary"
             size="small"
-            icon="Edit"
-            @click="editReq(row)"
+            icon="View"
+            @click="Reqdetails(row)"
           >
-            编辑
+            查看
+          </el-button>
+          <el-button
+            type="success"
+            size="small"
+            icon="DocumentChecked"
+            :disabled="row.status !== '待审批'"
+            @click="approvalReq(row, '已通过')"
+          >
+            通过
           </el-button>
           <el-button
             type="danger"
             size="small"
-            icon="Delete"
-            @click="deleteReq(row)"
+            icon="DocumentDelete"
+            :disabled="row.status !== '待审批'"
+            @click="approvalReq(row, '已拒绝')"
           >
-            删除
+            拒绝
+          </el-button>
+          <el-button
+            type="info"
+            size="small"
+            icon="RefreshRight"
+            :disabled="row.status === '待审批'"
+            @click="approvalReq(row, '待审批')"
+          >
+            撤回
           </el-button>
         </template>
       </el-table-column>
@@ -66,9 +91,12 @@
           {{ dialogReq.id }}
         </el-form-item>
         <el-form-item label="申请状态">
-          <el-button type="warning" size="small">
+          <el-button :type="btnStatus(dialogReq.status)" size="small">
             {{ dialogReq.status }}
           </el-button>
+        </el-form-item>
+        <el-form-item label="申请人">
+          {{ dialogReq.name }}
         </el-form-item>
         <el-form-item label="当前审批人">
           {{ dialogReq.Approver }}
@@ -93,8 +121,29 @@
         </el-form-item>
       </el-form>
       <template #footer>
-        <el-button type="primary" @click="saveChange">保存</el-button>
-        <el-button type="default" @click="dialogStatus = false">取消</el-button>
+        <el-button
+          type="success"
+          icon="DocumentChecked"
+          :disabled="dialogReq.status !== '待审批'"
+          @click="approvalReq(dialogReq, '已通过')"
+        >
+          通过
+        </el-button>
+        <el-button
+          type="danger"
+          icon="DocumentDelete"
+          :disabled="dialogReq.status !== '待审批'"
+          @click="approvalReq(dialogReq, '已拒绝')"
+        >
+          拒绝
+        </el-button>
+        <el-button
+          type="default"
+          icon="CloseBold"
+          @click="dialogStatus = false"
+        >
+          取消
+        </el-button>
       </template>
     </el-dialog>
   </el-card>
@@ -102,7 +151,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, reactive, watch } from 'vue'
-import { applyDeleteReq, applyManageReqList } from '@/api/ReqOffice'
+import { applyManageReqList, applyChangeReqStatus } from '@/api/ReqOffice'
 import type { reqInfo } from '@/api/ReqOffice/type'
 // 首次展示页号
 let pageNo = ref(1)
@@ -129,7 +178,7 @@ let dialogReq: reqInfo = reactive({
 })
 // 筛选审批状态
 let reqStatus = ref('全部')
-// 获取本人申请列表
+// 获取管理申请列表
 const getReqList = async () => {
   const name = localStorage.getItem('NAME')
   const result: any = await applyManageReqList(name, reqStatus.value)
@@ -156,15 +205,15 @@ const aftercolse = () => {
     dialogStatus.value = false
   }, 100)
 }
-// 编辑
-const editReq = (data: any) => {
+// 查看
+const Reqdetails = (data: any) => {
   dialogStatus.value = true
   dialogReq = Object.assign(dialogReq, data)
 }
 
-// 删除
-const deleteReq = async (data: any) => {
-  const result: any = await applyDeleteReq(data.id)
+// 审核
+const approvalReq = async (data: any, status: string) => {
+  const result: any = await applyChangeReqStatus(data.id, status)
   if (result.code === 201) {
     ElMessage.error({
       message: result.data.message,
@@ -176,12 +225,20 @@ const deleteReq = async (data: any) => {
       showClose: true,
     })
   }
+  dialogStatus.value = false
   getReqList()
 }
 
-// 保存修改
-const saveChange = async () => {
-  console.log('保存修改')
+// 状态按钮颜色
+const btnStatus = (status: string) => {
+  switch (status) {
+    case '待审批':
+      return 'warning'
+    case '已通过':
+      return 'success'
+    case '已拒绝':
+      return 'danger'
+  }
 }
 </script>
 
