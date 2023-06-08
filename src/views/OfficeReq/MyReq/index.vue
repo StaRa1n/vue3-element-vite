@@ -1,10 +1,16 @@
 <template>
   <el-card class="box-card">
     <el-menu default-active="1" mode="horizontal">
-      <el-menu-item index="1">全部</el-menu-item>
-      <el-menu-item index="2">待审批</el-menu-item>
-      <el-menu-item index="3">审批通过</el-menu-item>
-      <el-menu-item index="4">审批拒绝</el-menu-item>
+      <el-menu-item index="1" @click="reqStatus = ''">全部</el-menu-item>
+      <el-menu-item index="2" @click="reqStatus = '待审批'">
+        待审批
+      </el-menu-item>
+      <el-menu-item index="3" @click="reqStatus = '已通过'">
+        审批通过
+      </el-menu-item>
+      <el-menu-item index="4" @click="reqStatus = '已拒绝'">
+        审批拒绝
+      </el-menu-item>
     </el-menu>
     <!-- 用户列表 -->
     <el-table class="user_table" stripe="true" border="true" :data="reqList">
@@ -124,6 +130,8 @@ let dialogReq: reqInfo = reactive({
   reason: '',
   status: '',
 })
+// 筛选审批状态
+let reqStatus = ref()
 // 获取本人申请列表
 const getReqList = async () => {
   const result: any = await applyReqList()

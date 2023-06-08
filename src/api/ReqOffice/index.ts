@@ -12,12 +12,13 @@ enum API {
 // 暴露请求函数
 
 // 获取用户申请列表接口方法
-export const applyReqList = () => request.get<any, reqInfo>(API.REQLIST_URL)
+export const applyReqList = (reqStatus?: string) =>
+  request.get<any, reqInfo>(API.REQLIST_URL + `${reqStatus}`)
 
 // 提交用户申请列表接口方法
-export const applyAddReq = (data: reqInfo) => {
-  data.subTime = moment(data.subTime).format('YYYY-MM-DD HH:mm:ss')
-  data.startTime = moment(data.startTime).format('YYYY-MM-DD HH:mm:ss')
-  data.endTime = moment(data.endTime).format('YYYY-MM-DD HH:mm:ss')
-  return request.post<any, reqInfo>(API.ADDREQ_URL, data)
+export const applyAddReq = (Reqdata: reqInfo) => {
+  Reqdata.subTime = moment(Reqdata.subTime).format('YYYY-MM-DD HH:mm:ss')
+  Reqdata.startTime = moment(Reqdata.startTime).format('YYYY-MM-DD HH:mm:ss')
+  Reqdata.endTime = moment(Reqdata.endTime).format('YYYY-MM-DD HH:mm:ss')
+  return request.post<any, reqInfo>(API.ADDREQ_URL, { Reqdata, status })
 }

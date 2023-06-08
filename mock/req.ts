@@ -23,7 +23,7 @@ const req = [
     startTime: '2023-06-010 00:00:00',
     endTime: '2023-06-012 00:00:00',
     reason: '家中有事',
-    status: '待审核',
+    status: '待审批',
   },
   {
     id: 3,
@@ -43,18 +43,22 @@ const req = [
 export default [
   // 获取申请信息接口
   {
-    url: '/api/ReqOffice/reqlist',
+    url: '/api/ReqOffice/reqlist/:reqStatus',
     method: 'get',
     response: (request) => {
       //获取请求头携带token
       const token = request.headers.token
+      const reqStatus = request.query
       //查看用户信息是否包含有次token用户
-      const reqList = req.filter((item) => item.applicant === token)
+      let reqList = req.filter((item) => item.applicant === token)
       //没有返回失败的信息
       if (!req) {
         return { code: 201, data: { message: '获取申请列表失败' } }
       }
       //如果有返回成功信息
+      if (reqStatus !== '') {
+        reqList = reqList.filter((item) => item.status === reqStatus)
+      }
       return { code: 200, data: { reqList } }
     },
   },
