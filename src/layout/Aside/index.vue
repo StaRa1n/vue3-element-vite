@@ -2,6 +2,7 @@
   <el-aside class="layout_aside" :class="LayOutSettingStore.fold ? 'fold' : ''">
     <div class="logo">
       <img src="../../../public/logo.png" />
+      <div>OA办公管理系统</div>
     </div>
     <el-scrollbar class="scrollbar">
       <el-menu
@@ -46,9 +47,14 @@ let LayOutSettingStore = useLayOutSettingStore()
 
   .logo {
     display: flex;
+    justify-content: center;
     align-items: center;
     img {
       height: 50px;
+      margin-right: 15px;
+    }
+    div {
+      font-size: 22px;
     }
   }
   .scrollbar {
