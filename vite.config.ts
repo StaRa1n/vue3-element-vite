@@ -18,6 +18,9 @@ export default ({ command }) => {
       vue(),
       // 按需导入element
       AutoImport({
+        eslintrc: {
+          enable: true,
+        },
         resolvers: [ElementPlusResolver()],
       }),
       Components({
