@@ -1,8 +1,7 @@
 <template>
   <div class="login_container">
     <el-row :gutter="0">
-      <el-col :span="12" :xs="0"></el-col>
-      <el-col :span="12" :xs="24">
+      <el-col :span="24">
         <el-form
           class="login_from"
           :model="loginForm"
@@ -28,7 +27,12 @@
             ></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button class="login_btn" type="primary" @click="login">
+            <el-button
+              class="login_btn"
+              type="primary"
+              color="#0992b1"
+              @click="login"
+            >
               登录
             </el-button>
           </el-form-item>
@@ -111,23 +115,28 @@ const login = async () => {
 .login_container {
   width: 100%;
   height: 100vh;
-  background-color: #c45e5e;
+  background-image: url(@/assets/images/bgcimage2.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
   .login_from {
     position: relative;
     width: 80%;
+    max-width: 500px;
     padding: 40px;
-    background-color: #b0b2ea;
+    background-color: #ffffff;
     top: 50vh;
+    border-radius: 15px;
     transform: translateY(-50%);
+    margin: 0 auto;
     el-form-item {
       padding-left: 20px;
     }
     h1 {
-      color: white;
+      color: #0992b1;
       font-size: 30px;
     }
     h2 {
-      color: white;
+      color: #0992b1;
       margin-top: 20px;
       margin-bottom: 15px;
     }
