@@ -59,6 +59,7 @@ const messageData = [
   color: #5d6167;
   display: flex;
   align-items: center;
+  cursor: pointer;
   :first-child {
     color: #f9aa34;
   }

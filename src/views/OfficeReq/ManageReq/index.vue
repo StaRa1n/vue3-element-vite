@@ -180,7 +180,7 @@ let dialogReq: reqInfo = reactive({
 let reqStatus = ref('全部')
 // 获取管理申请列表
 const getReqList = async () => {
-  const name = localStorage.getItem('NAME')
+  const name = localStorage.getItem('NAME') as string
   const result: any = await applyManageReqList(name, reqStatus.value)
   if (result.code === 200) {
     reqList.value = result.data.reqList
