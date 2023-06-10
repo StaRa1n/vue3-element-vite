@@ -10,11 +10,11 @@
       </el-col>
     </el-row>
     <el-row gutter="20">
-      <el-col :span="7">
+      <el-col :span="6">
         <DateTodo></DateTodo>
       </el-col>
-      <el-col :span="10">
-        <el-card class="reqList">申请列表</el-card>
+      <el-col :span="11">
+        <ReqList />
       </el-col>
       <el-col :span="7">
         <message></message>
@@ -29,6 +29,7 @@ import fastReq from './components/fastReq.vue'
 import signin from './components/signin.vue'
 import DateTodo from './components/DateTodo.vue'
 import message from './components/message.vue'
+import ReqList from './components/ReqList.vue'
 </script>
 
 <style lang="scss" scoped>

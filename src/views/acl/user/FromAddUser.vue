@@ -65,7 +65,7 @@
           <el-form-item></el-form-item>
         </el-form>
         <span class="dialog-footer">
-          <el-button type="primary" @click="save">保存</el-button>
+          <el-button type="primary" @click="save">确定</el-button>
           <el-button type="default" @click="dialogAddUser = false">
             取消
           </el-button>
