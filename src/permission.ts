@@ -4,6 +4,7 @@ import router from './router'
 import nprogress from 'nprogress'
 import 'nprogress/nprogress.css'
 nprogress.configure({ showSpinner: false })
+
 // 获取用户小仓库内部token数据,判断用户是否登录成功
 import pinia from './store'
 import useUserStore from './store/modules/user'
@@ -12,7 +13,7 @@ const userStore = useUserStore(pinia)
 //全局前置守卫
 router.beforeEach(async (to, from, next) => {
   const token = userStore.token
-  const username = userStore.username
+  const name = userStore.name
   if (token) {
     nprogress.start()
     // 用户已登录
@@ -20,13 +21,14 @@ router.beforeEach(async (to, from, next) => {
       next({ path: '/' })
     } else {
       // 有用户信息
-      if (username) {
+      if (name) {
         next()
       } else {
         // 没有用户信息发请求获取用户信息再放行
         try {
           await userStore.getUserInfo()
-          next()
+
+          next({ ...to })
         } catch (error) {
           // token过期
           // 用户手动修改了本地token

@@ -14,7 +14,23 @@ import {
   REMOVE_NAME,
 } from '@/utils/token'
 // 引入路由(常量)
-import { constantRoute } from '@/router/routes'
+import { constantRoute, asnycRoute, anyRoute } from '@/router/routes'
+import router from '@/router'
+// 深拷贝
+// @ts-ignore
+import cloneDeep from 'lodash/cloneDeep'
+
+// 用于过滤当前用户需要展示的异步路由
+const filterAsyncRoute = (asnycRoute: any, routes: any) => {
+  return asnycRoute.filter((item: any) => {
+    if (routes.includes(item.name)) {
+      if (item.children && item.children.length > 0) {
+        item.children = filterAsyncRoute(item.children, routes)
+      }
+      return true
+    }
+  })
+}
 
 // 创建用户小仓库
 const useUserStore = defineStore('User', {
@@ -34,6 +50,8 @@ const useUserStore = defineStore('User', {
     // 用户登录的方法
     async userLogin(data: loginForm) {
       const result: loginResponseData = await reqLogin(data)
+      // 计算当前用户所需展示的异步路由
+
       // 登录请求:成功200->token
       // 登录请求:失败201->登陆失败
       if (result.code === 200) {
@@ -53,12 +71,22 @@ const useUserStore = defineStore('User', {
       const result = await reqUserInfo()
 
       if (result.code === 200) {
+        let userAsyncRoute = filterAsyncRoute(
+          cloneDeep(asnycRoute),
+          result.data.checkUser.routes,
+        )
+        // 用户的路由整理
+        this.menuRoute = [...constantRoute, ...userAsyncRoute, anyRoute]
+        // 动态注册异步路由
+        ;[...userAsyncRoute, anyRoute].forEach((route) => {
+          router.addRoute(route)
+        })
         this.name = result.data.checkUser.name
         this.avatar = result.data.checkUser.avatar
         this.department = result.data.checkUser.department
         this.position = result.data.checkUser.position
         SET_NAME(result.data.checkUser.name as string)
-        return 'OK'
+        return true
       } else {
         return Promise.reject('获取用户信息失败')
       }

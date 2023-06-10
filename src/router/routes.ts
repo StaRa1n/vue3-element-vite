@@ -1,17 +1,17 @@
 // 对外暴露配置路由(常量路由)
 export const constantRoute = [
+  // 登录
   {
-    // 登录
     path: '/login',
     component: () => import('@/views/login/index.vue'),
     name: 'login', // 命名路由
     meta: {
       title: '登录',
-      hidden: true,
+      hidden: true, // 路由菜单是否隐藏
     },
   },
+  // 登陆成功后展示数据的路由
   {
-    // 登陆成功后展示数据的路由
     path: '/',
     component: () => import('@/layout/index.vue'),
     name: 'layout',
@@ -32,6 +32,21 @@ export const constantRoute = [
       },
     ],
   },
+  // 404
+  {
+    path: '/404',
+    component: () => import('@/views/404/index.vue'),
+    name: '404',
+    meta: {
+      title: '404',
+      hidden: true,
+    },
+  },
+]
+
+// 异步路由
+export const asnycRoute = [
+  // 审批申请
   {
     path: '/OfficeReq',
     component: () => import('@/layout/index.vue'),
@@ -71,6 +86,7 @@ export const constantRoute = [
       },
     ],
   },
+  // 权限管理
   {
     path: '/acl',
     component: () => import('@/layout/index.vue'),
@@ -110,28 +126,16 @@ export const constantRoute = [
       },
     ],
   },
-  {
-    path: '/404',
-    component: () => import('@/views/404/index.vue'),
-    name: '404',
-    meta: {
-      title: '404',
-      hidden: true,
-    },
-  },
-  {
-    // 任意路由
-    path: '/:pathMatch(.*)*',
-    // redirect: '/404',
-    name: 'Any',
-    component: () => import('@/views/404/index.vue'),
-    meta: {
-      title: '任意路由',
-      hidden: true,
-    },
-  },
-  // {
-  //   path: '*',
-  //   redirect: '/login',
-  // },
 ]
+
+// 任意路由
+export const anyRoute = {
+  path: '/:pathMatch(.*)*',
+  redirect: '/404',
+  name: 'Any',
+  component: () => import('@/views/404/index.vue'),
+  meta: {
+    title: '任意路由',
+    hidden: true,
+  },
+}
