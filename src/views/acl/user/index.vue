@@ -46,7 +46,14 @@
         />
         <el-table-column label="操作" align="center" width="280">
           <template #default="{ row }">
-            <el-button type="primary" size="small" icon="User">暂定</el-button>
+            <el-button
+              type="primary"
+              size="small"
+              icon="User"
+              @click="editUser(row)"
+            >
+              查看
+            </el-button>
             <el-button
               type="primary"
               size="small"
