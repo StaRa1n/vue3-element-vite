@@ -2,7 +2,7 @@
   <el-aside class="layout_aside" :class="LayOutSettingStore.fold ? 'fold' : ''">
     <div class="logo">
       <img src="../../../public/logo.png" />
-      <div>OA办公管理系统</div>
+      <div v-if="!LayOutSettingStore.fold">OA办公管理系统</div>
     </div>
     <el-scrollbar class="scrollbar">
       <el-menu
