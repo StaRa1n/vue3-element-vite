@@ -24,6 +24,7 @@
     "src/**/*.tsx",
     "src/**/*.vue",
     "auto-imports.d.ts",
+    "js-modules.d.ts",
     "src/assets/icons/reqicon.js",
     "src/views/OfficeReq/SubmitReq/reqtype.ts"
   ],

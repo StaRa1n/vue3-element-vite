@@ -1,8 +1,8 @@
 // 路由鉴权: 一个路由在什么样的条件下可以访问
 import router from './router'
 // 引入进度条插件
+
 import nprogress from 'nprogress'
-import 'nprogress/nprogress.css'
 nprogress.configure({ showSpinner: false })
 
 // 获取用户小仓库内部token数据,判断用户是否登录成功
